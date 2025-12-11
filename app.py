@@ -84,6 +84,12 @@ def start_mqtt():
     if not st.session_state.mqtt_started:
         thread = threading.Thread(target=worker, daemon=True)
         thread.start()
+try:
+    import streamlit.runtime.scriptrunner as scriptrunner
+    scriptrunner.add_script_run_ctx(thread)
+except:
+    pass
+
         st.session_state.mqtt_started = True
 
 start_mqtt()
@@ -114,6 +120,13 @@ process_queue()
 # ---------------------------
 # UI LAYOUT
 # ---------------------------
+try:
+    from streamlit_autorefresh import st_autorefresh
+    st_autorefresh(interval=2000, key="refresh")
+except:
+    pass
+
+
 left, right = st.columns([1, 2])
 
 with left:
